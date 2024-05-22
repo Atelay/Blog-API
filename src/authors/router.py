@@ -17,7 +17,7 @@ from .schemas import AuthorBase, AuthorCreate
 
 router = APIRouter(
     prefix="/authors",
-    tags=["authors"],
+    tags=["Authors"],
     responses={404: {"description": "Not found"}},
 )
 
