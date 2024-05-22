@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres:16.1
+    container_name: blog_db
+    ports:
+      - $POSTGRES_PORT:5432
+    env_file:
+      - .env
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - blog
+    healthcheck:
+      test: "pg_isready -d $POSTGRES_DB -U $POSTGRES_USER"
+      interval: 2s
+      timeout: 15s
+
+networks:
+  blog:
+    driver: bridge
+
+volumes:
+  postgres_data:
