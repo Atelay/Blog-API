@@ -1,11 +1,14 @@
 from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import ORJSONResponse
 
 from src.config import SWAGGER_PARAMETERS
+from src.authors.router import router as authors
 
+# from src.categories.router import router as categories
+# from src.posts.router import router as posts
+# from src.tags.router import router as tags
 
 app = FastAPI(
     default_response_class=ORJSONResponse,
@@ -21,3 +24,5 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(authors)
