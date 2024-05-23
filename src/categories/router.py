@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped
 
 from src.database import get_async_session
+from src.utils import rate_limit
 from .service import (
     get_category,
     get_categories,
@@ -21,7 +22,9 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[CategoryBase])
+@router.get(
+    "/", dependencies=[Depends(rate_limit())], response_model=List[CategoryBase]
+)
 async def get_all_categories(session: AsyncSession = Depends(get_async_session)):
     """
     Get all categories.
@@ -35,7 +38,9 @@ async def get_all_categories(session: AsyncSession = Depends(get_async_session))
     return await get_categories(session)
 
 
-@router.get("/{category_id}", response_model=CategoryBase)
+@router.get(
+    "/{category_id}", dependencies=[Depends(rate_limit())], response_model=CategoryBase
+)
 async def get_category_by_id(category: Mapped = Depends(get_category)):
     """
     Get an category by their ID.
@@ -50,7 +55,7 @@ async def get_category_by_id(category: Mapped = Depends(get_category)):
     return category
 
 
-@router.post("/", response_model=CategoryBase)
+@router.post("/", dependencies=[Depends(rate_limit())], response_model=CategoryBase)
 async def create_new_category(
     category: CategoryCreate, session: AsyncSession = Depends(get_async_session)
 ):
@@ -67,7 +72,9 @@ async def create_new_category(
     return await create_category(category, session)
 
 
-@router.put("/{category_id}", response_model=CategoryBase)
+@router.put(
+    "/{category_id}", dependencies=[Depends(rate_limit())], response_model=CategoryBase
+)
 async def update_category_by_id(
     category_data: CategoryCreate,
     category: Mapped = Depends(get_category),
@@ -87,7 +94,7 @@ async def update_category_by_id(
     return await update_category(category, category_data, session)
 
 
-@router.delete("/{category_id}")
+@router.delete("/{category_id}", dependencies=[Depends(rate_limit())])
 async def delete_category_by_id(
     category: Mapped = Depends(get_category),
     session: AsyncSession = Depends(get_async_session),

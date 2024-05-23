@@ -1,4 +1,4 @@
-from pydantic import PostgresDsn
+from pydantic import PostgresDsn, RedisDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -17,6 +17,7 @@ SWAGGER_PARAMETERS = {
 
 class Settings(BaseSettings):
     db_url: PostgresDsn
+    redis_url: RedisDsn
 
     model_config = SettingsConfigDict(
         env_file=(".env.example", ".env"), case_sensitive=False, extra="ignore"

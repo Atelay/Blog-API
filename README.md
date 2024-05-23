@@ -50,7 +50,9 @@ To run the project, you will need [Docker-compose](https://www.digitalocean.com/
     <b class="variable-name">POSTGRES_PORT</b>=<span class="variable-value">5432</span><br>
     <b class="variable-name">POSTGRES_DB</b>=<span class="variable-value">blog_db</span><br>
     <b class="variable-name">POSTGRES_USER</b>=<span class="variable-value">postgres</span><br>
-    <b class="variable-name">POSTGRES_PASSWORD</b>=<span class="variable-value">postgres</span><br><br>
+    <b class="variable-name">POSTGRES_PASSWORD</b>=<span class="variable-value">postgres</span><br>
+    <b class="variable-name">REDIS_PASS</b>=<span class="variable-value">redis</span><br>
+    <b class="variable-name">REDIS_URL</b>=<span class="variable-value">redis://default:redis@localhost:6379</span><br>
     <b class="variable-name">DB_URL</b>=<span class="variable-value">postgresql+asyncpg://postgres:postgres@localhost:5432/blog_db</span><br>
 
     </details>
@@ -69,7 +71,7 @@ To run the project, you will need [Docker-compose](https://www.digitalocean.com/
     ```
     make run
     ```
-    This command will create a container with the database, initiate migrations, and start the server on port `8000`.<br>
+    This command will create a container with the database, redis, initiate migrations, and start the server on port `8000`.<br>
     Subsequent launches of the application are carried out with the command:
     ```
     make start
