@@ -4,6 +4,7 @@
 DB_CONTAINER := blog_db
 REDIS_CONTAINER := blog_redis
 DB_TEST_VOLUME := $$(basename "$$(pwd)")_postgres_tests_data
+DB_VOLUME := $$(basename "$$(pwd)")_postgres_data
 REDIS_VOLUME := $$(basename "$$(pwd)")_redis_data
 
 down:
@@ -39,4 +40,14 @@ test:
 	if docker volume ls -q | grep -q $(DB_TEST_VOLUME); then \
 		docker volume rm $(DB_TEST_VOLUME); \
 		echo "successfully test_db";\
+	fi
+
+drop_db: down 
+	if docker volume ls -q | grep -q $(DB_VOLUME); then \
+		docker volume rm $(DB_VOLUME); \
+		echo "successfully drop_db 1";\
+	fi
+	if docker volume ls -q | grep -q $(REDIS_VOLUME); then \
+		docker volume rm $(REDIS_VOLUME); \
+		echo "successfully drop_db 2";\
 	fi
