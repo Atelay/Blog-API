@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped
 
 from src.database import get_async_session
+from src.utils import rate_limit
 from .service import (
     delete_author,
     get_author,
@@ -22,7 +23,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[AuthorBase])
+@router.get("/", dependencies=[Depends(rate_limit())], response_model=List[AuthorBase])
 async def get_all_authors(session: AsyncSession = Depends(get_async_session)):
     """
     Get all authors.
@@ -36,7 +37,9 @@ async def get_all_authors(session: AsyncSession = Depends(get_async_session)):
     return await get_authors(session)
 
 
-@router.get("/{author_id}", response_model=AuthorBase)
+@router.get(
+    "/{author_id}", dependencies=[Depends(rate_limit())], response_model=AuthorBase
+)
 async def get_author_by_id(author: Mapped = Depends(get_author)):
     """
     Get an author by their ID.
@@ -51,7 +54,7 @@ async def get_author_by_id(author: Mapped = Depends(get_author)):
     return author
 
 
-@router.post("/", response_model=AuthorBase)
+@router.post("/", dependencies=[Depends(rate_limit())], response_model=AuthorBase)
 async def create_new_author(
     author: AuthorCreate, session: AsyncSession = Depends(get_async_session)
 ):
@@ -68,7 +71,9 @@ async def create_new_author(
     return await create_author(author, session)
 
 
-@router.put("/{author_id}", response_model=AuthorBase)
+@router.put(
+    "/{author_id}", dependencies=[Depends(rate_limit())], response_model=AuthorBase
+)
 async def update_author_by_id(
     author_data: AuthorCreate,
     author: Mapped = Depends(get_author),
@@ -88,7 +93,7 @@ async def update_author_by_id(
     return await update_author(author, author_data, session)
 
 
-@router.delete("/{author_id}")
+@router.delete("/{author_id}", dependencies=[Depends(rate_limit())])
 async def delete_author_by_id(
     author: Mapped = Depends(get_author),
     session: AsyncSession = Depends(get_async_session),

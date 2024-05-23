@@ -7,12 +7,14 @@ from src.authors.router import router as authors
 from src.categories.router import router as categories
 from src.posts.router import router as posts
 from src.tags.router import router as tags
+from src.utils import lifespan
 
 
 app = FastAPI(
     default_response_class=ORJSONResponse,
     swagger_ui_parameters=SWAGGER_PARAMETERS,
     title="Blog App",
+    lifespan=lifespan,
 )
 
 

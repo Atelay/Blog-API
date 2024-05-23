@@ -19,6 +19,24 @@ services:
       interval: 2s
       timeout: 15s
 
+  redis:
+    image: redis:7.2.4
+    container_name: blog_redis
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=$REDIS_PASS
+    command: [ "--maxmemory", "250mb" ]
+    restart: always
+    volumes:
+      - redis_data:/data
+    networks:
+      - blog
+    healthcheck:
+      test: "redis-cli --raw ping"
+      interval: 2s
+      timeout: 15s
+
   backend:
     image: backend_image_blog
     build:
@@ -32,6 +50,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: always
     networks:
       - blog
@@ -42,3 +62,4 @@ networks:
 
 volumes:
   postgres_data:
+  redis_data:

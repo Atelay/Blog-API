@@ -2,23 +2,26 @@
 
 
 DB_CONTAINER := blog_db
+REDIS_CONTAINER := blog_redis
 DB_TEST_VOLUME := $$(basename "$$(pwd)")_postgres_tests_data
+REDIS_VOLUME := $$(basename "$$(pwd)")_redis_data
 
 down:
 	docker compose down
 
 build:
 	docker compose up -d --build
-  
+
 run: down
-	docker compose up postgres -d
+	docker compose up postgres redis -d
 	@while true; do \
-	sleep 1; \
-	result_db=$$(docker inspect -f '{{json .State.Health.Status}}' $(DB_CONTAINER)); \
-	if [ "$$result_db" = "\"healthy\"" ]; then \
-		echo "Service is healthy"; \
-		break; \
-	fi; \
+		sleep 1; \
+		result_db=$$(docker inspect -f '{{json .State.Health.Status}}' $(DB_CONTAINER)); \
+		result_redis=$$(docker inspect -f '{{json .State.Health.Status}}' $(REDIS_CONTAINER)); \
+		if [ "$$result_db" = "\"healthy\"" ] && [ "$$result_redis" = "\"healthy\"" ]; then \
+			echo "Services are healthy"; \
+			break; \
+		fi; \
 	done
 	alembic upgrade head
 	make start
