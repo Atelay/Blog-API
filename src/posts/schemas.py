@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, Field
+from typing import List, Optional
 
 from src.tags.schemas import TagBase
 
@@ -7,8 +7,8 @@ from src.tags.schemas import TagBase
 class PostCreate(BaseModel):
     title: str
     content: str
-    author_id: int
-    category_id: int
+    author_id: Optional[int] = Field(None)
+    category_id: Optional[int] = Field(None)
     tags: List[int] = []
 
 
