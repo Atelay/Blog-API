@@ -24,3 +24,5 @@ run: down
 
 start:
 	fastapi dev src
+
+prod: down build

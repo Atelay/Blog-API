@@ -19,6 +19,23 @@ services:
       interval: 2s
       timeout: 15s
 
+  backend:
+    image: backend_image_blog
+    build:
+      context: .
+    container_name: backend_blog
+    env_file:
+      - .env
+    entrypoint: sh "scripts/backend_app.sh"
+    ports:
+      - 8000:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: always
+    networks:
+      - blog
+
 networks:
   blog:
     driver: bridge
