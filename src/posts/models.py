@@ -9,8 +9,12 @@ class Post(Base):
 
     title: Mapped[str]
     content: Mapped[str]
-    author_id: Mapped[int] = mapped_column(ForeignKey("authors.id"))
-    category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
+    author_id: Mapped[int | None] = mapped_column(
+        ForeignKey("authors.id", ondelete="SET NULL")
+    )
+    category_id: Mapped[int | None] = mapped_column(
+        ForeignKey("categories.id", ondelete="SET NULL")
+    )
     author: Mapped["Author"] = relationship(back_populates="posts")
     category: Mapped["Category"] = relationship(back_populates="posts")
     tags: Mapped[list["Tag"]] = relationship(
