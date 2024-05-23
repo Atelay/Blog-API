@@ -1,4 +1,3 @@
-from unittest import mock
 from typing import AsyncGenerator
 import asyncio
 
@@ -9,6 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 from fastapi.testclient import TestClient
 
+from src.main import app
 from src.database import get_async_session, Base
 
 
@@ -25,8 +25,6 @@ async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         yield session
 
-
-from src.main import app
 
 app.dependency_overrides[get_async_session] = override_get_async_session
 client = TestClient(app)
