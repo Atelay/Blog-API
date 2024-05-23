@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped
 
 from src.database import get_async_session
+from src.utils import rate_limit
 from .service import get_posts, get_post, create_post, update_post, delete_post
 from .schemas import PostCreate, PostBase
 
@@ -16,7 +17,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[PostBase])
+@router.get("/", dependencies=[Depends(rate_limit())], response_model=List[PostBase])
 async def get_all_posts(session: AsyncSession = Depends(get_async_session)):
     """
     Get all posts.
@@ -30,7 +31,7 @@ async def get_all_posts(session: AsyncSession = Depends(get_async_session)):
     return await get_posts(session)
 
 
-@router.get("/{post_id}", response_model=PostBase)
+@router.get("/{post_id}", dependencies=[Depends(rate_limit())], response_model=PostBase)
 async def get_post_by_id(post: Mapped = Depends(get_post)):
     """
     Get an post by their ID.
@@ -45,7 +46,7 @@ async def get_post_by_id(post: Mapped = Depends(get_post)):
     return post
 
 
-@router.post("/", response_model=PostBase)
+@router.post("/", dependencies=[Depends(rate_limit())], response_model=PostBase)
 async def create_new_post(
     post: PostCreate, session: AsyncSession = Depends(get_async_session)
 ):
@@ -62,7 +63,7 @@ async def create_new_post(
     return await create_post(post, session)
 
 
-@router.put("/{post_id}", response_model=PostBase)
+@router.put("/{post_id}", dependencies=[Depends(rate_limit())], response_model=PostBase)
 async def update_post_by_id(
     post_data: PostCreate,
     post: Mapped = Depends(get_post),
@@ -82,7 +83,7 @@ async def update_post_by_id(
     return await update_post(post, post_data, session)
 
 
-@router.delete("/{post_id}")
+@router.delete("/{post_id}", dependencies=[Depends(rate_limit())])
 async def delete_post_by_id(
     post: Mapped = Depends(get_post),
     session: AsyncSession = Depends(get_async_session),

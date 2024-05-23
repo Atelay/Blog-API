@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped
 
 from src.database import get_async_session
+from src.utils import rate_limit
 from .schemas import TagBase, TagCreate
 from .service import get_tag, get_tags, create_tag, update_tag, delete_tag
 
@@ -16,7 +17,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[TagBase])
+@router.get("/", dependencies=[Depends(rate_limit())], response_model=List[TagBase])
 async def get_all_tags(session: AsyncSession = Depends(get_async_session)):
     """
     Get all tags.
@@ -30,7 +31,7 @@ async def get_all_tags(session: AsyncSession = Depends(get_async_session)):
     return await get_tags(session)
 
 
-@router.get("/{tag_id}", response_model=TagBase)
+@router.get("/{tag_id}", dependencies=[Depends(rate_limit())], response_model=TagBase)
 async def get_tag_by_id(tag: Mapped = Depends(get_tag)):
     """
     Get an tag by their ID.
@@ -45,7 +46,7 @@ async def get_tag_by_id(tag: Mapped = Depends(get_tag)):
     return tag
 
 
-@router.post("/", response_model=TagBase)
+@router.post("/", dependencies=[Depends(rate_limit())], response_model=TagBase)
 async def create_new_tag(
     tag: TagCreate, session: AsyncSession = Depends(get_async_session)
 ):
@@ -62,7 +63,7 @@ async def create_new_tag(
     return await create_tag(tag, session)
 
 
-@router.put("/{tag_id}", response_model=TagBase)
+@router.put("/{tag_id}", dependencies=[Depends(rate_limit())], response_model=TagBase)
 async def update_tag_by_id(
     tag_data: TagCreate,
     tag: Mapped = Depends(get_tag),
@@ -82,7 +83,7 @@ async def update_tag_by_id(
     return await update_tag(tag, tag_data, session)
 
 
-@router.delete("/{tag_id}")
+@router.delete("/{tag_id}", dependencies=[Depends(rate_limit())])
 async def delete_tag_by_id(
     tag: Mapped = Depends(get_tag),
     session: AsyncSession = Depends(get_async_session),
