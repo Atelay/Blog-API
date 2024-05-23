@@ -3,11 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 
 from src.config import SWAGGER_PARAMETERS
-from src.authors.router import router as authors
-from src.categories.router import router as categories
-from src.posts.router import router as posts
-from src.tags.router import router as tags
 from src.utils import lifespan
+from src import api_routers
 
 
 app = FastAPI(
@@ -26,10 +23,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-api_routers = [
-    authors,
-    tags,
-    categories,
-    posts,
-]
 [app.include_router(router, prefix="/api/v1") for router in api_routers]
