@@ -5,7 +5,7 @@ from fastapi_limiter.depends import RateLimiter
 from src.redis import init_redis
 
 
-def rate_limit(times: int = 2, seconds: int = 5) -> RateLimiter:
+def rate_limit(times: int = 100, seconds: int = 60) -> RateLimiter:
     """
     A rate limit function that can be used to limit the number of requests
     that a client can make within a given time frame.
