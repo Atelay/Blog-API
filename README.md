@@ -83,6 +83,7 @@ To run the project, you will need [Docker-compose](https://www.digitalocean.com/
 - `build`: Builds Docker images for the project.
 - `run`: Starts Postgres containers for Postgres and Redis, waits for it to become healthy, upgrades the database, and then launches the application.
 - `start`: Initiates the web application using Uvicorn.
+- `test`: Runs the test suite
 
 <h2 align="center">DOCUMENTATION</h2>
 
