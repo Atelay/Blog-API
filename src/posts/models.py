@@ -14,5 +14,5 @@ class Post(Base):
     author: Mapped["Author"] = relationship(back_populates="posts")
     category: Mapped["Category"] = relationship(back_populates="posts")
     tags: Mapped[list["Tag"]] = relationship(
-        secondary="post_tags", back_populates="posts"
+        secondary="post_tags", back_populates="posts", lazy="selectin"
     )

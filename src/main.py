@@ -5,7 +5,7 @@ from fastapi.responses import ORJSONResponse
 from src.config import SWAGGER_PARAMETERS
 from src.authors.router import router as authors
 from src.categories.router import router as categories
-# from src.posts.router import router as posts
+from src.posts.router import router as posts
 from src.tags.router import router as tags
 
 
@@ -27,3 +27,4 @@ app.add_middleware(
 app.include_router(authors)
 app.include_router(tags)
 app.include_router(categories)
+app.include_router(posts)
