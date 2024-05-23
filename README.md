@@ -1,3 +1,11 @@
+<div class="badge_container" style="display: flex; justify-content: center;">
+
+![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)
+[![Docker](https://img.shields.io/badge/docker-blue.svg)](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04)
+[![Docker-compose](https://img.shields.io/badge/docker-compose-orange.svg)](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04)
+![Linux (Ubuntu 22.04+)](https://img.shields.io/badge/linux-ubuntu%2022.04%2B-green.svg)
+</div>
+
 <h1 align="center">Blog-API</h1>
 <p align="center">
 This project is a test assignment for a Python developer position. It is intended to demonstrate my skills and knowledge in FastAPI framework development.
@@ -78,7 +86,7 @@ To run the project, you will need [Docker-compose](https://www.digitalocean.com/
     ```
 <h2 align="center">MAKEFILE COMMANDS</h2>
 
-*These commands streamline various development and deployment tasks, including container management, database operations, backups, and frontend management.*
+*These commands streamline various development and deployment tasks, including container management and database operations.*
 
 
 - `down:` Stop and remove all Docker containers.
